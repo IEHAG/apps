@@ -6,9 +6,9 @@ let supabase;
 if (window.supabase) {
   supabase = window.supabase.createClient(supabaseUrl, supabaseKey, {
     auth: {
-      persistSession: true,
-      autoRefreshToken: true,
-      storage: localStorage
+      persistSession: true,         // ⛔ No guarda sesión entre cierres
+      autoRefreshToken: false,       // ⛔ No renueva token automáticamente
+      storage: sessionStorage        // ✅ Sesión temporal
     }
   });
 } else {
@@ -88,26 +88,22 @@ async function recoverPassword(email) {
 // Manejar la sesión actual
 async function handleAuthState() {
   const currentPath = window.location.pathname;
-
   const publicPages = ['login.html', 'register.html', 'reset-password.html'];
   const isPublicPage = publicPages.some(page => currentPath.includes(page));
   const session = await checkSession();
 
-  // 🔐 Si no hay sesión y no estás en página pública → redirigir
   if (!session && !isPublicPage) {
     console.log('🔐 No hay sesión. Redirigiendo a login...');
     window.location.href = 'login.html';
     return;
   }
 
-  // ✅ Si hay sesión y estás en login.html → redirigir al inicio
   if (session && currentPath.includes('login.html')) {
     console.log('🧭 Usuario con sesión intentando ir a login → redirigiendo a index');
     window.location.href = 'index.html';
     return;
   }
 
-  // ✅ Si hay sesión y estás en una página protegida, mostrar contenido
   if (session && !isPublicPage) {
     try {
       const { data: { user } } = await supabase.auth.getUser();
@@ -117,7 +113,7 @@ async function handleAuthState() {
       if (protectedContent) protectedContent.classList.remove('d-none');
 
       const logoutBtn = document.getElementById('logoutBtn');
-      if (logoutBtn) logoutBtn.addEventListener('click', logoutUser);
+      if (logoutBtn) logoutBtn.addEventListener('click', () => logoutUser());
     } catch (error) {
       console.error('Error al obtener usuario:', error);
     }
@@ -125,3 +121,20 @@ async function handleAuthState() {
 
   console.log('✅ Página permitida sin redirección:', currentPath);
 }
+
+// Ejecutar cuando el DOM esté cargado
+document.addEventListener('DOMContentLoaded', () => {
+  handleAuthState();
+});
+
+// Exportar funciones globalmente para usarlas desde HTML
+window.auth = {
+  loginUser,
+  logoutUser,
+  checkSession,
+  registerUser,
+  recoverPassword,
+  supabase
+};
+
+console.log('✅ auth.js cargado correctamente con sesión temporal.');

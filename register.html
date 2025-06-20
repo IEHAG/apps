@@ -61,6 +61,23 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="auth.js"></script>
+  <script>
+  const waitForAuth = () =>
+    new Promise(resolve => {
+      const check = () => window.auth ? resolve() : setTimeout(check, 50);
+      check();
+    });
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    await waitForAuth(); // Espera que auth.js esté cargado
+
+    // Ya puedes usar cualquier función de auth.js
+    const session = await window.auth.checkSession();
+    if (session) {
+      console.log('👤 Ya hay sesión activa');
+    }
+  });
+</script>
 <script>
   document.addEventListener('DOMContentLoaded', async () => {
     const session = await window.auth.checkSession();
