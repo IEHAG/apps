@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro - Institución Educativa</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="login.css" rel="stylesheet">
+</head>
+
+<body class="background-page">
+
+  <div class="container-fluid login-container">
+    <div class="row justify-content-center w-100">
+      <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5">
+        <form id="registerForm" class="custom-form glassmorphism-effect">
+          <p id="heading">Registrarse</p>
+          <p class="institution-name">Institución Educativa</p>
+
+          <div id="errorMessage" class="alert alert-danger d-none" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            <span id="errorText"></span>
+          </div>
+
+          <div class="field">
+            <i class="bi bi-envelope input-icon"></i>
+            <input type="email" class="input-field" id="registerEmail" placeholder="Correo Electrónico" required>
+          </div>
+
+          <div class="field">
+            <i class="bi bi-lock input-icon"></i>
+            <input type="password" class="input-field" id="registerPassword" placeholder="Contraseña" required>
+            <button class="btn btn-outline-secondary password-toggle" type="button" id="passwordToggle">
+              <i class="bi bi-eye" id="passwordToggleIcon"></i>
+            </button>
+          </div>
+
+          <div class="btn">
+            <button type="submit" class="button1" id="registerButton">
+              <span class="button-text">Registrarse</span>
+              <span class="spinner-border spinner-border-sm d-none" id="registerSpinner"></span>
+            </button>
+          </div>
+
+          <div class="text-center mt-3">
+            <a href="login.html" class="button3">¿Ya tienes cuenta? Inicia sesión</a>
+          </div>
+        </form>
+
+        <!-- Botón adicional para volver al login después del registro -->
+        <div class="text-center mt-4 d-none" id="postRegister">
+          <a href="login.html" class="btn btn-outline-primary">Ir al inicio de sesión</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts en el orden correcto -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="auth.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', async () => {
+    const session = await window.auth.checkSession();
+    if (session) {
+      console.log('👋 Cerrando sesión previa...');
+      await window.auth.logoutUser(); // Esto también redirige a login
+      // ⚠️ Para evitar que te devuelva a login, quita la redirección dentro de logoutUser()
+    }
+  });
+</script>
+<script>
+  localStorage.removeItem('sb-bltyyxfzksybuklfqzgu-auth-token'); // o usa clear() si solo usas Supabase
+</script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Mostrar/Ocultar contraseña
+      document.getElementById('passwordToggle').addEventListener('click', function () {
+        const passwordInput = document.getElementById('registerPassword');
+        const icon = document.getElementById('passwordToggleIcon');
+        passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password';
+        icon.classList.toggle('bi-eye');
+        icon.classList.toggle('bi-eye-slash');
+      });
+
+      // Registro
+      document.getElementById('registerForm').addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        const email = document.getElementById('registerEmail').value.trim();
+        const password = document.getElementById('registerPassword').value;
+        const button = document.getElementById('registerButton');
+        const spinner = document.getElementById('registerSpinner');
+        const text = document.querySelector('#registerButton .button-text');
+        const errorBox = document.getElementById('errorMessage');
+        const errorText = document.getElementById('errorText');
+        const postRegister = document.getElementById('postRegister');
+
+        button.disabled = true;
+        spinner.classList.remove('d-none');
+        text.classList.add('d-none');
+        errorBox.classList.add('d-none');
+
+        try {
+          await window.auth.registerUser(email, password);
+
+          // Espera breve para garantizar escritura en localStorage
+          await new Promise(resolve => setTimeout(resolve, 1000));
+
+          alert('✅ Registro exitoso.\n📩 Revisa tu correo electrónico y confirma tu cuenta antes de iniciar sesión.');
+
+          // Mostrar el botón para ir al login
+          postRegister.classList.remove('d-none');
+        } catch (error) {
+          errorBox.classList.remove('d-none');
+          errorText.textContent = error.message || "Error al registrar";
+        } finally {
+          button.disabled = false;
+          spinner.classList.add('d-none');
+          text.classList.remove('d-none');
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>

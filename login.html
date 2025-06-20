@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Institución Educativa</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="login.css" rel="stylesheet">
+</head>
+
+<body class="background-page">
+    <div class="container-fluid login-container">
+        <div class="row justify-content-center w-100">
+            <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5">
+                <form id="loginForm" class="custom-form glassmorphism-effect">
+                    <p id="heading">Iniciar Sesión</p>
+                    <p class="institution-name"></p>
+
+                    <div id="errorMessage" class="alert alert-danger d-none" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        <span id="errorText"></span>
+                    </div>
+
+                    <div class="field">
+                        <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                            fill="currentColor" viewBox="0 0 16 16">
+                            <path
+                                d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555ZM0 4.697v7.104l5.803-3.558L0 4.697ZM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757Zm3.436-.586L16 11.801V4.697l-5.803 3.546Z" />
+                        </svg>
+                        <input autocomplete="off" placeholder="Correo Electrónico" class="input-field" id="email"
+                            type="email" required>
+                    </div>
+
+                    <div class="field">
+                        <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                            fill="currentColor" viewBox="0 0 16 16">
+                            <path
+                                d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z" />
+                        </svg>
+                        <input placeholder="Contraseña" class="input-field" id="password" type="password" required>
+                        <button class="btn btn-outline-secondary password-toggle" type="button" id="passwordToggle">
+                            <i class="bi bi-eye" id="passwordToggleIcon"></i>
+                        </button>
+                    </div>
+
+                    <div class="btn">
+                        <button type="submit" class="button1" id="loginButton">
+                            <span class="button-text">Iniciar Sesión</span>
+                            <span class="spinner-border spinner-border-sm d-none" id="loginSpinner"></span>
+                        </button>
+                    </div>
+
+                    <button type="button" class="button3" id="forgotPasswordBtn">¿Olvidaste tu contraseña?</button>
+                    <div class="text-center mt-3">
+                        <a href="register.html" class="button3">¿No tienes cuenta? Regístrate</a>
+                    </div>
+
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Recuperar Contraseña -->
+    <div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content glassmorphism-effect">
+                <div class="modal-header">
+                    <h5 class="modal-title">Recuperar Contraseña</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="forgotPasswordForm">
+                        <div class="mb-3">
+                            <label for="recoveryEmail" class="form-label">Correo Electrónico</label>
+                            <input type="email" class="form-control dark-input" id="recoveryEmail" required>
+                        </div>
+                        <button type="submit" class="button1 w-100">
+                            <span id="recoveryButtonText">Enviar Enlace</span>
+                            <span class="spinner-border spinner-border-sm d-none" id="recoverySpinner"></span>
+                        </button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="button3" data-bs-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="auth.js"></script>
+    <script>
+        // Toggle Password Visibility
+        document.getElementById('passwordToggle').addEventListener('click', function () {
+            const passwordInput = document.getElementById('password');
+            const icon = document.getElementById('passwordToggleIcon');
+            passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password';
+            icon.classList.toggle('bi-eye');
+            icon.classList.toggle('bi-eye-slash');
+        });
+
+        // Login Form
+        document.getElementById('loginForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const loginButton = document.getElementById('loginButton');
+            const spinner = document.getElementById('loginSpinner');
+            const errorMessage = document.getElementById('errorMessage');
+            const buttonText = document.querySelector('.button-text');
+
+            if (!email || !password) {
+                errorMessage.classList.remove('d-none');
+                errorMessage.textContent = "Por favor complete todos los campos";
+                return;
+            }
+
+            loginButton.disabled = true;
+            spinner.classList.remove('d-none');
+            buttonText.classList.add('d-none');
+            errorMessage.classList.add('d-none');
+
+            try {
+                await loginUser(email, password);
+                window.location.href = 'index.html';
+            } catch (error) {
+                errorMessage.classList.remove('d-none');
+                errorMessage.textContent = error.message || "Error al iniciar sesión";
+            } finally {
+                loginButton.disabled = false;
+                spinner.classList.add('d-none');
+                buttonText.classList.remove('d-none');
+            }
+        });
+
+        // Forgot Password
+        document.getElementById('forgotPasswordBtn').addEventListener('click', function () {
+            const modal = new bootstrap.Modal(document.getElementById('forgotPasswordModal'));
+            modal.show();
+        });
+
+        document.getElementById('forgotPasswordForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const email = document.getElementById('recoveryEmail').value;
+            const buttonText = document.getElementById('recoveryButtonText');
+            const spinner = document.getElementById('recoverySpinner');
+
+            buttonText.classList.add('d-none');
+            spinner.classList.remove('d-none');
+
+            try {
+                await recoverPassword(email);
+                alert('Enlace de recuperación enviado a tu correo');
+                bootstrap.Modal.getInstance(document.getElementById('forgotPasswordModal')).hide();
+            } catch (error) {
+                alert('Error: ' + error.message);
+            } finally {
+                buttonText.classList.remove('d-none');
+                spinner.classList.add('d-none');
+            }
+        });
+    </script>
+</body>
+
+</html>

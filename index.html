@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tabla Periódica de Apps de IA</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    <link href="styles.css" rel="stylesheet" />
+    <style>
+        /* Imagen de fondo relacionada con IA */
+        body {
+            background-image: url('logo/vico.png');
+            background-size: 15% auto;
+            /* 15% del ancho, altura automática */
+            background-repeat: no-repeat;
+            /* Evita que se repita */
+            background-attachment: fixed;
+            background-position: right center;
+            /* Derecha y centrado vertical */
+        }
+    </style>
+
+
+</head>
+
+<body>
+
+    <!-- Header con logo y flecha -->
+    <header class="header">
+        <div class="container text-start">
+            <button onclick="logoutUser()" class="btn btn-outline-danger btn-sm float-end">Cerrar sesión</button>
+            <img src="logo/BANDERA+LOGO.png" alt="Logo Institución Educativa Héctor Abad Gómez"
+                class="school-logo mb-3 me-3 float-start">
+            <h1>Tabla de Apps de IA para Profes</h1>
+            <p class="text-muted">Descubre las mejores herramientas de Inteligencia Artificial organizadas por
+                categorías</p>
+            <a href="#main-content" class="scroll-down"><i class="fas fa-chevron-down"></i></a>
+        
+        </div>
+    </header>
+
+    <main id="main-content">
+        <!-- Información institucional -->
+        <div class="institution-info text-center mb-4">
+            <h2>Institución Educativa Héctor Abad Gómez</h2>
+            <h5>Diseño y elaboración</h5>
+            <p class="text-muted">Docente: Víctor Cañola</p>
+        </div>
+
+        <!-- Leyenda -->
+        <div class="legend justify-content-center d-flex flex-wrap gap-3 mb-4">
+            <div class="legend-item">
+                <div class="legend-dot category-chatbots"></div><span>Chatbots y Texto</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot category-images"></div><span>Imágenes</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot category-presentations"></div><span>Presentaciones</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot category-video"></div><span>Video y Animación</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot category-audio"></div><span>Audio</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot category-education"></div><span>Educación</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot category-others"></div><span>Otros</span>
+            </div>
+        </div>
+
+        <!-- Barra de búsqueda -->
+        <div class="search-container text-center mb-4 position-relative">
+            <input type="text" class="search-input" id="searchInput" placeholder="Buscar apps de IA...">
+            <button id="clearSearch" class="...">✕</button>
+
+
+        </div>
+
+        <!-- Botones de filtro (fijos al scrollear) -->
+        <div class="filter-buttons sticky-top bg-white py-2 shadow-sm">
+            <div class="container text-center">
+                <button class="filter-btn active" data-category="all">Todas</button>
+                <button class="filter-btn" data-category="chatbots">Chatbots</button>
+                <button class="filter-btn" data-category="images">Imágenes</button>
+                <button class="filter-btn" data-category="presentations">Presentaciones</button>
+                <button class="filter-btn" data-category="video">Video</button>
+                <button class="filter-btn" data-category="audio">Audio</button>
+                <button class="filter-btn" data-category="education">Educación</button>
+                <button class="filter-btn" data-category="others">Otros</button>
+            </div>
+        </div>
+
+        <!-- Grilla de apps -->
+        <div class="apps-grid container" id="appsGrid"></div>
+        <!--<div class="apps-grid container d-none" id="appsGrid"></div>-->
+
+    </main>
+
+    <!-- Modal -->
+    <div class="modal fade" id="appModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">App Info</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="modalBody"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <a href="#" class="btn btn-primary" id="modalVisitBtn" target="_blank">Visitar App</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="auth.js"></script>
+</body>
+
+</html>
