@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Registro - Institución Educativa</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
@@ -12,12 +12,13 @@
 
 <body class="background-page">
 
-  <div class="container-fluid login-container">
-    <div class="row justify-content-center w-100">
-      <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5">
+  <!-- Modifica el contenedor principal igual que en login -->
+  <div class="container-fluid login-container px-3">
+    <div class="row justify-content-center mx-0">
+      <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5 px-0">
         <form id="registerForm" class="custom-form glassmorphism-effect">
-          <p id="heading">Registrarse</p>
-          <p class="institution-name">Institución Educativa</p>
+          <p id="heading"></p>
+          <p class="institution-name"></p>
 
           <div id="errorMessage" class="alert alert-danger d-none" role="alert">
             <i class="bi bi-exclamation-triangle-fill me-2"></i>
@@ -26,12 +27,14 @@
 
           <div class="field">
             <i class="bi bi-envelope input-icon"></i>
-            <input type="email" class="input-field" id="registerEmail" placeholder="Correo Electrónico" required>
+            <input type="email" class="input-field" id="registerEmail" placeholder="Correo Electrónico"
+              autocomplete="username" required>
           </div>
 
           <div class="field">
             <i class="bi bi-lock input-icon"></i>
-            <input type="password" class="input-field" id="registerPassword" placeholder="Contraseña" required>
+            <input type="password" class="input-field" id="registerPassword" placeholder="Contraseña"
+              autocomplete="new-password" required>
             <button class="btn btn-outline-secondary password-toggle" type="button" id="passwordToggle">
               <i class="bi bi-eye" id="passwordToggleIcon"></i>
             </button>
@@ -62,35 +65,35 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="auth.js"></script>
   <script>
-  const waitForAuth = () =>
-    new Promise(resolve => {
-      const check = () => window.auth ? resolve() : setTimeout(check, 50);
-      check();
+    const waitForAuth = () =>
+      new Promise(resolve => {
+        const check = () => window.auth ? resolve() : setTimeout(check, 50);
+        check();
+      });
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      await waitForAuth(); // Espera que auth.js esté cargado
+
+      // Ya puedes usar cualquier función de auth.js
+      const session = await window.auth.checkSession();
+      if (session) {
+        console.log('👤 Ya hay sesión activa');
+      }
     });
-
-  document.addEventListener('DOMContentLoaded', async () => {
-    await waitForAuth(); // Espera que auth.js esté cargado
-
-    // Ya puedes usar cualquier función de auth.js
-    const session = await window.auth.checkSession();
-    if (session) {
-      console.log('👤 Ya hay sesión activa');
-    }
-  });
-</script>
-<script>
-  document.addEventListener('DOMContentLoaded', async () => {
-    const session = await window.auth.checkSession();
-    if (session) {
-      console.log('👋 Cerrando sesión previa...');
-      await window.auth.logoutUser(); // Esto también redirige a login
-      // ⚠️ Para evitar que te devuelva a login, quita la redirección dentro de logoutUser()
-    }
-  });
-</script>
-<script>
-  localStorage.removeItem('sb-bltyyxfzksybuklfqzgu-auth-token'); // o usa clear() si solo usas Supabase
-</script>
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const session = await window.auth.checkSession();
+      if (session) {
+        console.log('👋 Cerrando sesión previa...');
+        await window.auth.logoutUser(); // Esto también redirige a login
+        // ⚠️ Para evitar que te devuelva a login, quita la redirección dentro de logoutUser()
+      }
+    });
+  </script>
+  <script>
+    localStorage.removeItem('sb-bltyyxfzksybuklfqzgu-auth-token'); // o usa clear() si solo usas Supabase
+  </script>
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
