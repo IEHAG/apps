@@ -53,6 +53,7 @@ const apps = [
     // 🎥 Video y Animación
     { name: 'DreamActor-M1', category: 'video', logoUrl: 'https://dreamactor.ai/favicon.ico', color: '#4f46e5', free: true, description: 'Animación de imágenes humanas con IA.', url: 'https://dreamactor.ai' },
     { name: 'Fliki', category: 'video', logoUrl: 'https://fliki.ai/favicon.ico', color: '#4f46e5', free: true, description: 'Creador de videos con voces de IA y avatares.', url: 'https://fliki.ai' },
+    { name: 'Goku AI', category: 'video', logoUrl: 'https://chat100.ai/favicon.ico', color: '#4f46e5', free: true, description: 'Generador de video con avatares animados y voz IA estilo anime.', url: 'https://chat100.ai/es/features/goku-ai' },
     { name: 'HeyGen', category: 'video', logoUrl: 'https://heygen.com/favicon.ico', color: '#4f46e5', free: false, description: 'Creador de videos con avatares de IA.', url: 'https://heygen.com' },
     { name: 'Kapwing', category: 'video', logoUrl: 'https://www.kapwing.com/favicon.ico', color: '#4f46e5', free: true, description: 'Editor de video en línea con herramientas de IA.', url: 'https://www.kapwing.com' },
     { name: 'LumaLabs', category: 'video', logoUrl: 'https://lumalabs.ai/favicon.ico', color: '#4f46e5', free: true, description: 'Captura 3D y generación de videos realistas.', url: 'https://lumalabs.ai' },
