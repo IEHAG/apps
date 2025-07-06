@@ -20,12 +20,12 @@ const apps = [
 
     // 🎨 Imágenes
     { name: 'Adobe Firefly', category: 'images', logoUrl: 'https://firefly.adobe.com/favicon.ico', color: '#06b6d4', free: true, description: 'IA generativa de Adobe integrada en Creative Cloud.', url: 'https://firefly.adobe.com' },
-    { name: 'BFL Playground', category: 'images', logoUrl: 'https://playground.bfl.ai/favicon.ico', color: '#06b6d4', free: true, description: 'Editor de imágenes con IA para modificar y mejorar fotos fácilmente.', url: 'https://playground.bfl.ai/image/edit' },
+    { name: 'Playground', category: 'images', logoUrl: 'https://playground.bfl.ai/favicon.ico', color: '#06b6d4', free: true, description: 'Editor de imágenes con IA para modificar y mejorar fotos fácilmente.', url: 'https://playground.bfl.ai/image/edit' },
     { name: 'DALL-E', category: 'images', logoUrl: 'https://cdn.openai.com/API/logo-openai.svg', color: '#06b6d4', free: false, description: 'Generador de imágenes a partir de texto de OpenAI.', url: 'https://openai.com/dall-e-2' },
     { name: 'EasyEdit', category: 'images', logoUrl: 'https://www.easyedit.io/favicon.ico', color: '#06b6d4', free: true, description: 'Plataforma de edición visual para generar imágenes de productos y escenas realistas.', url: 'https://www.easyedit.io/' },
     { name: 'Flux Kontext', category: 'images', logoUrl: 'https://www.fluxpro.ai/favicon.ico', color: '#06b6d4', free: true, description: 'IA para gestión de contexto visual y edición avanzada.', url: 'https://www.fluxpro.ai/im-tools/flux-kontext' },
-    { name: 'Flux1 AI (Ghibli)', category: 'images', logoUrl: 'https://flux1.ai/favicon.ico', color: '#06b6d4', free: true, description: 'Generador de imágenes al estilo Studio Ghibli con IA.', url: 'https://flux1.ai/studio-ghibli' },
-    { name: 'Flux1 AI (Login)', category: 'images', logoUrl: 'https://flux1.ai/favicon.ico', color: '#06b6d4', free: true, description: 'Portal de inicio de sesión para acceder a las herramientas visuales de Flux1.', url: 'https://flux1.ai/sign-in' },
+    { name: 'Flux', category: 'images', logoUrl: 'https://flux1.ai/favicon.ico', color: '#06b6d4', free: true, description: 'Generador de imágenes al estilo Studio Ghibli con IA.', url: 'https://flux1.ai/studio-ghibli' },
+    { name: 'Flux1 AI', category: 'images', logoUrl: 'https://flux1.ai/favicon.ico', color: '#06b6d4', free: true, description: 'Portal de inicio de sesión para acceder a las herramientas visuales de Flux1.', url: 'https://flux1.ai/sign-in' },
     { name: 'Ideogram', category: 'images', logoUrl: 'https://ideogram.ai/favicon.ico', color: '#06b6d4', free: true, description: 'Generador de imágenes con especialidad en texto.', url: 'https://ideogram.ai/' },
     { name: 'Leonardo AI', category: 'images', logoUrl: 'https://leonardo.ai/favicon.ico', color: '#06b6d4', free: true, description: 'Plataforma de generación de imágenes con controles avanzados.', url: 'https://leonardo.ai' },
     { name: 'Lexica', category: 'images', logoUrl: 'https://lexica.art/favicon.ico', color: '#06b6d4', free: true, description: 'Buscador y generador de imágenes con IA.', url: 'https://lexica.art/' },
