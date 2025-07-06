@@ -54,13 +54,19 @@ const apps = [
     { name: 'DreamActor-M1', category: 'video', logoUrl: 'https://dreamactor.ai/favicon.ico', color: '#4f46e5', free: true, description: 'Animación de imágenes humanas con IA.', url: 'https://dreamactor.ai' },
     { name: 'Fliki', category: 'video', logoUrl: 'https://fliki.ai/favicon.ico', color: '#4f46e5', free: true, description: 'Creador de videos con voces de IA y avatares.', url: 'https://fliki.ai' },
     { name: 'HeyGen', category: 'video', logoUrl: 'https://heygen.com/favicon.ico', color: '#4f46e5', free: false, description: 'Creador de videos con avatares de IA.', url: 'https://heygen.com' },
+    { name: 'Kapwing', category: 'video', logoUrl: 'https://www.kapwing.com/favicon.ico', color: '#4f46e5', free: true, description: 'Editor de video en línea con herramientas de IA.', url: 'https://www.kapwing.com' },
     { name: 'LumaLabs', category: 'video', logoUrl: 'https://lumalabs.ai/favicon.ico', color: '#4f46e5', free: true, description: 'Captura 3D y generación de videos realistas.', url: 'https://lumalabs.ai' },
+    { name: 'Pictory', category: 'video', logoUrl: 'https://pictory.ai/favicon.ico', color: '#4f46e5', free: true, description: 'Crea videos desde texto y artículos con IA.', url: 'https://pictory.ai' },
     { name: 'Pika Labs', category: 'video', logoUrl: 'https://pika.art/favicon.ico', color: '#4f46e5', free: true, description: 'Generador de videos a partir de texto e imágenes.', url: 'https://pika.art' },
     { name: 'RunwayML', category: 'video', logoUrl: 'https://runwayml.com/favicon.ico', color: '#4f46e5', free: true, description: 'Suite completa de herramientas de video con IA.', url: 'https://runwayml.com' },
+    { name: 'SeaArt Video', category: 'video', logoUrl: 'https://seaart.ai/favicon.ico', color: '#4f46e5', free: true, description: 'Generación de video con IA desde prompts o imágenes.', url: 'https://www.seaart.ai/es/' },
+    { name: 'Synthesia', category: 'video', logoUrl: 'https://www.synthesia.io/favicon.ico', color: '#4f46e5', free: false, description: 'Crea videos con avatares realistas a partir de texto.', url: 'https://www.synthesia.io' },
     { name: 'Syllaby.io', category: 'video', logoUrl: 'https://syllaby.io/favicon.ico', color: '#4f46e5', free: true, description: 'Herramienta para crear videos sin rostro con IA.', url: 'https://syllaby.io' },
     { name: 'VEED', category: 'video', logoUrl: 'https://veed.io/favicon.ico', color: '#4f46e5', free: true, description: 'Editor de videos online gratuito.', url: 'https://veed.io' },
     { name: 'WAN AI', category: 'video', logoUrl: 'https://videomaker.me/favicon.ico', color: '#4f46e5', free: true, description: 'Herramienta de generación de videos con IA.', url: 'https://videomaker.me/es/features/wan-ai' },
     { name: 'Wan2.1', category: 'video', logoUrl: 'https://wan2.1.ai/favicon.ico', color: '#4f46e5', free: true, description: 'Generador gratuito de videos con IA.', url: 'https://wan.video/wanxiang/videoCreation' },
+    { name: 'Wave.video', category: 'video', logoUrl: 'https://wave.video/favicon.ico', color: '#4f46e5', free: true, description: 'Creador de videos para redes sociales y marketing.', url: 'https://wave.video' },
+
 
     // 🎵 Audio
     { name: '123Apps', category: 'audio', logoUrl: 'https://123apps.com/favicon.ico', color: '#ec4899', free: true, description: 'Suite de herramientas para audio y video online.', url: 'https://123apps.com/es/' },
