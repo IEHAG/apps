@@ -20,17 +20,26 @@ const apps = [
 
     // 🎨 Imágenes
     { name: 'Adobe Firefly', category: 'images', logoUrl: 'https://firefly.adobe.com/favicon.ico', color: '#06b6d4', free: true, description: 'IA generativa de Adobe integrada en Creative Cloud.', url: 'https://firefly.adobe.com' },
+    { name: 'BFL Playground', category: 'images', logoUrl: 'https://playground.bfl.ai/favicon.ico', color: '#06b6d4', free: true, description: 'Editor de imágenes con IA para modificar y mejorar fotos fácilmente.', url: 'https://playground.bfl.ai/image/edit' },
     { name: 'DALL-E', category: 'images', logoUrl: 'https://cdn.openai.com/API/logo-openai.svg', color: '#06b6d4', free: false, description: 'Generador de imágenes a partir de texto de OpenAI.', url: 'https://openai.com/dall-e-2' },
+    { name: 'EasyEdit', category: 'images', logoUrl: 'https://www.easyedit.io/favicon.ico', color: '#06b6d4', free: true, description: 'Plataforma de edición visual para generar imágenes de productos y escenas realistas.', url: 'https://www.easyedit.io/' },
+    { name: 'Flux Kontext', category: 'images', logoUrl: 'https://www.fluxpro.ai/favicon.ico', color: '#06b6d4', free: true, description: 'IA para gestión de contexto visual y edición avanzada.', url: 'https://www.fluxpro.ai/im-tools/flux-kontext' },
+    { name: 'Flux1 AI (Ghibli)', category: 'images', logoUrl: 'https://flux1.ai/favicon.ico', color: '#06b6d4', free: true, description: 'Generador de imágenes al estilo Studio Ghibli con IA.', url: 'https://flux1.ai/studio-ghibli' },
+    { name: 'Flux1 AI (Login)', category: 'images', logoUrl: 'https://flux1.ai/favicon.ico', color: '#06b6d4', free: true, description: 'Portal de inicio de sesión para acceder a las herramientas visuales de Flux1.', url: 'https://flux1.ai/sign-in' },
     { name: 'Ideogram', category: 'images', logoUrl: 'https://ideogram.ai/favicon.ico', color: '#06b6d4', free: true, description: 'Generador de imágenes con especialidad en texto.', url: 'https://ideogram.ai/' },
     { name: 'Leonardo AI', category: 'images', logoUrl: 'https://leonardo.ai/favicon.ico', color: '#06b6d4', free: true, description: 'Plataforma de generación de imágenes con controles avanzados.', url: 'https://leonardo.ai' },
     { name: 'Lexica', category: 'images', logoUrl: 'https://lexica.art/favicon.ico', color: '#06b6d4', free: true, description: 'Buscador y generador de imágenes con IA.', url: 'https://lexica.art/' },
     { name: 'Midjourney', category: 'images', logoUrl: 'https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/midjourney.png', color: '#06b6d4', free: false, description: 'Generador de arte e imágenes de alta calidad.', url: 'https://midjourney.com' },
     { name: 'Pika', category: 'images', logoUrl: 'https://pika.art/favicon.ico', color: '#06b6d4', free: true, description: 'IA para generar animaciones e imágenes.', url: 'https://pika.art' },
+    { name: 'PNGimg', category: 'images', logoUrl: 'https://pngimg.com/favicon.ico', color: '#06b6d4', free: true, description: 'Banco de imágenes PNG transparentes de uso libre.', url: 'https://pngimg.com/' },
     { name: 'PromptHero', category: 'images', logoUrl: 'https://prompthero.com/favicon.ico', color: '#06b6d4', free: true, description: 'Banco de prompts para generación de imágenes con IA.', url: 'https://prompthero.com/' },
     { name: 'Recraft', category: 'images', logoUrl: 'https://recraft.ai/favicon.ico', color: '#06b6d4', free: true, description: 'Generador de arte con edición infinita.', url: 'https://recraft.ai' },
     { name: 'RedPanda AI', category: 'images', logoUrl: 'https://redpandaai.com/favicon.ico', color: '#06b6d4', free: true, description: 'Generador de imágenes con IA.', url: 'https://redpandaai.com/tools/ai-image-generator' },
+    { name: 'Remove Photos', category: 'images', logoUrl: 'https://remove.photos/favicon.ico', color: '#06b6d4', free: true, description: 'Elimina fondos de fotos automáticamente con IA.', url: 'https://remove.photos/es/' },
     { name: 'SeaArt AI', category: 'images', logoUrl: 'https://seaart.ai/favicon.ico', color: '#06b6d4', free: true, description: 'Plataforma gratuita de generación de arte con IA.', url: 'https://seaart.ai' },
     { name: 'Stable Diffusion', category: 'images', logoUrl: 'https://stability.ai/favicon.ico', color: '#06b6d4', free: true, description: 'Modelo de generación de imágenes de código abierto.', url: 'https://stability.ai' },
+    { name: 'Whisk (Google FX)', category: 'images', logoUrl: 'https://labs.google/favicon.ico', color: '#06b6d4', free: true, description: 'Herramienta experimental de Google para transformar imágenes en visuales interactivos.', url: 'https://labs.google/fx/es-419/tools/whisk' },
+
 
 
     // 📊 Presentaciones
@@ -55,13 +64,18 @@ const apps = [
 
     // 🎵 Audio
     { name: '123Apps', category: 'audio', logoUrl: 'https://123apps.com/favicon.ico', color: '#ec4899', free: true, description: 'Suite de herramientas para audio y video online.', url: 'https://123apps.com/es/' },
+    { name: 'AI Studios', category: 'audio', logoUrl: 'https://app.aistudios.com/favicon.ico', color: '#ec4899', free: true, description: 'Generación de voz e imagen con avatares realistas.', url: 'https://app.aistudios.com/dashboard' },
     { name: 'ElevenLabs', category: 'audio', logoUrl: 'https://elevenlabs.io/favicon.ico', color: '#ec4899', free: true, description: 'Síntesis de voz realista con IA.', url: 'https://elevenlabs.io' },
     { name: 'HookSounds', category: 'audio', logoUrl: 'https://www.hooksounds.com/favicon.ico', color: '#ec4899', free: false, description: 'Música libre de derechos para tus proyectos.', url: 'https://www.hooksounds.com/es/royalty-free-music/' },
+    { name: 'MiniMax Audio', category: 'audio', logoUrl: 'https://www.minimax.io/favicon.ico', color: '#ec4899', free: true, description: 'Plataforma de audio basada en IA para generación avanzada de voz.', url: 'https://www.minimax.io/audio' },
     { name: 'Murf', category: 'audio', logoUrl: 'https://murf.ai/favicon.ico', color: '#ec4899', free: false, description: 'Generador de voces profesionales para contenido.', url: 'https://murf.ai' },
+    { name: 'Narakeet', category: 'audio', logoUrl: 'https://www.narakeet.com/favicon.ico', color: '#ec4899', free: true, description: 'Conversión de texto a voz con voces naturales en múltiples idiomas.', url: 'https://www.narakeet.com/app/text-to-audio/?projectId=c89e8e47-e976-4549-a947-447a0ed7e9cb' },
     { name: 'Riffusion', category: 'audio', logoUrl: 'https://riffusion.com/favicon.ico', color: '#ec4899', free: true, description: 'Generador de sonidos musicales basado en difusión.', url: 'https://riffusion.com' },
     { name: 'Speechify', category: 'audio', logoUrl: 'https://speechify.com/favicon.ico', color: '#ec4899', free: true, description: 'Convertidor de texto a voz de alta calidad.', url: 'https://speechify.com' },
     { name: 'Suno', category: 'audio', logoUrl: 'https://suno.ai/favicon.ico', color: '#ec4899', free: true, description: 'Generador de música completa con IA.', url: 'https://suno.ai' },
     { name: 'Udio', category: 'audio', logoUrl: 'https://udio.com/favicon.ico', color: '#ec4899', free: true, description: 'Plataforma de generación musical con IA.', url: 'https://udio.com' },
+    { name: 'Zonos', category: 'audio', logoUrl: 'https://zonos.live/favicon.ico', color: '#ec4899', free: true, description: 'Plataforma para creación de música y beats con IA.', url: 'https://zonos.live/' },
+
 
 
     // 📚 Educación
