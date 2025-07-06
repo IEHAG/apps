@@ -38,7 +38,7 @@ const apps = [
     { name: 'Remove Photos', category: 'images', logoUrl: 'https://remove.photos/favicon.ico', color: '#06b6d4', free: true, description: 'Elimina fondos de fotos automáticamente con IA.', url: 'https://remove.photos/es/' },
     { name: 'SeaArt AI', category: 'images', logoUrl: 'https://seaart.ai/favicon.ico', color: '#06b6d4', free: true, description: 'Plataforma gratuita de generación de arte con IA.', url: 'https://seaart.ai' },
     { name: 'Stable Diffusion', category: 'images', logoUrl: 'https://stability.ai/favicon.ico', color: '#06b6d4', free: true, description: 'Modelo de generación de imágenes de código abierto.', url: 'https://stability.ai' },
-    { name: 'Whisk (Google FX)', category: 'images', logoUrl: 'https://labs.google/favicon.ico', color: '#06b6d4', free: true, description: 'Herramienta experimental de Google para transformar imágenes en visuales interactivos.', url: 'https://labs.google/fx/es-419/tools/whisk' },
+    { name: 'Whisk', category: 'images', logoUrl: 'https://labs.google/favicon.ico', color: '#06b6d4', free: true, description: 'Herramienta experimental de Google para transformar imágenes en visuales interactivos.', url: 'https://labs.google/fx/es-419/tools/whisk' },
 
 
 
