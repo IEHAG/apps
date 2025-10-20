@@ -2,17 +2,32 @@
 const supabaseUrl = 'https://aipryeelikrxvrmxrjwg.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFpcHJ5ZWVsaWtyeHZybXhyandnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTcyMDEzNjIsImV4cCI6MjA3Mjc3NzM2Mn0.VtmNrmhaCRf9aiDiJTBzF6Gs-Jwo5NW8AIBmDdFDWKk';
 
+// Credenciales por defecto para uso offline
+const DEFAULT_CREDENTIALS = {
+  email: 'appsdocentes@iehectorabadgomez.edu.co',
+  password: 'Master2025'
+};
+
 let supabase;
-if (window.supabase) {
-  supabase = window.supabase.createClient(supabaseUrl, supabaseKey, {
-    auth: {
-      persistSession: true,         // ⛔ No guarda sesión entre cierres
-      autoRefreshToken: false,       // ⛔ No renueva token automáticamente
-      storage: sessionStorage        // ✅ Sesión temporal
-    }
-  });
-} else {
-  console.error('❌ Supabase SDK no está cargado.');
+let isSupabaseAvailable = false;
+
+// Intentar inicializar Supabase
+try {
+  if (window.supabase) {
+    supabase = window.supabase.createClient(supabaseUrl, supabaseKey, {
+      auth: {
+        persistSession: true,         // ⛔ No guarda sesión entre cierres
+        autoRefreshToken: false,       // ⛔ No renueva token automáticamente
+        storage: sessionStorage        // ✅ Sesión temporal
+      }
+    });
+    isSupabaseAvailable = true;
+    console.log('✅ Supabase inicializado correctamente');
+  } else {
+    console.warn('⚠️ Supabase SDK no está cargado. Usando autenticación local.');
+  }
+} catch (error) {
+  console.warn('⚠️ Error al inicializar Supabase. Usando autenticación local:', error);
 }
 
 // Función para traducir errores
@@ -29,12 +44,49 @@ function getAuthErrorMessage(error) {
 // Funciones de autenticación
 async function loginUser(email, password) {
   try {
-    const { data, error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
-    if (error) throw new Error(getAuthErrorMessage(error));
-    return data;
+    // Si Supabase no está disponible, usar autenticación local
+    if (!isSupabaseAvailable || !supabase) {
+      return await localLogin(email, password);
+    }
+
+    // Intentar autenticación con Supabase
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
+      if (error) throw new Error(getAuthErrorMessage(error));
+      return data;
+    } catch (supabaseError) {
+      console.warn('⚠️ Error con Supabase, intentando autenticación local:', supabaseError);
+      return await localLogin(email, password);
+    }
   } catch (error) {
     console.error('Error en loginUser:', error);
     throw error;
+  }
+}
+
+// Función de autenticación local
+async function localLogin(email, password) {
+  // Verificar credenciales por defecto
+  if (email.trim() === DEFAULT_CREDENTIALS.email && password === DEFAULT_CREDENTIALS.password) {
+    // Crear sesión local
+    const localSession = {
+      user: {
+        id: 'local-user',
+        email: DEFAULT_CREDENTIALS.email,
+        user_metadata: {
+          full_name: 'Docente Víctor Cañola'
+        }
+      },
+      access_token: 'local-token-' + Date.now(),
+      refresh_token: 'local-refresh-' + Date.now()
+    };
+    
+    // Guardar en sessionStorage
+    sessionStorage.setItem('local_auth_session', JSON.stringify(localSession));
+    console.log('✅ Autenticación local exitosa');
+    return localSession;
+  } else {
+    throw new Error('Credenciales incorrectas. Use: appsdocentes@iehectorabadgomez.edu.co / Master2025');
   }
 }
 
