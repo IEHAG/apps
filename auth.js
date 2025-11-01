@@ -153,6 +153,9 @@ async function checkSession() {
 
 async function registerUser(email, password) {
   try {
+    if (!isSupabaseAvailable || !supabase) {
+      throw new Error('El registro solo está disponible cuando Supabase está conectado. Para usar la aplicación offline, use las credenciales por defecto.');
+    }
     const { data, error } = await supabase.auth.signUp({ email, password });
     if (error) throw new Error(getAuthErrorMessage(error));
     return data;
@@ -164,6 +167,9 @@ async function registerUser(email, password) {
 
 async function recoverPassword(email) {
   try {
+    if (!isSupabaseAvailable || !supabase) {
+      throw new Error('La recuperación de contraseña solo está disponible cuando Supabase está conectado. Use las credenciales por defecto: appsdocentes@iehectorabadgomez.edu.co / Master2025');
+    }
     const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: window.location.origin + '/reset-password.html'
     });
@@ -196,8 +202,18 @@ async function handleAuthState() {
 
   if (session && !isPublicPage) {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      console.log('👤 Usuario autenticado:', user);
+      let user;
+      // Obtener usuario según el tipo de sesión
+      if (session.user && session.user.id === 'local-user') {
+        // Sesión local
+        user = session.user;
+        console.log('👤 Usuario autenticado (local):', user);
+      } else if (isSupabaseAvailable && supabase) {
+        // Sesión de Supabase
+        const { data: { user: supabaseUser } } = await supabase.auth.getUser();
+        user = supabaseUser;
+        console.log('👤 Usuario autenticado (Supabase):', user);
+      }
 
       const protectedContent = document.getElementById('protectedContent');
       if (protectedContent) protectedContent.classList.remove('d-none');
