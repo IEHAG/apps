@@ -92,21 +92,59 @@ async function localLogin(email, password) {
 
 async function logoutUser(redirect = true) {
   try {
-    const { error } = await supabase.auth.signOut();
-    if (error) throw error;
+    // Limpiar sesión local
+    sessionStorage.removeItem('local_auth_session');
+    
+    // Intentar cerrar sesión en Supabase si está disponible
+    if (isSupabaseAvailable && supabase) {
+      try {
+        const { error } = await supabase.auth.signOut();
+        if (error) console.warn('Error al cerrar sesión en Supabase:', error);
+      } catch (error) {
+        console.warn('Error al cerrar sesión en Supabase:', error);
+      }
+    }
+    
     if (redirect) {
       window.location.href = 'login.html';
     }
   } catch (error) {
     console.error('Error al cerrar sesión:', error);
-    throw error;
+    // Aún así redirigir a login
+    if (redirect) {
+      window.location.href = 'login.html';
+    }
   }
 }
 
 async function checkSession() {
   try {
-    const { data: { session } } = await supabase.auth.getSession();
-    return session;
+    // Verificar sesión local primero
+    const localSession = sessionStorage.getItem('local_auth_session');
+    if (localSession) {
+      try {
+        const parsed = JSON.parse(localSession);
+        console.log('✅ Sesión local encontrada');
+        return parsed;
+      } catch (error) {
+        sessionStorage.removeItem('local_auth_session');
+      }
+    }
+    
+    // Intentar verificar sesión en Supabase si está disponible
+    if (isSupabaseAvailable && supabase) {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session) {
+          console.log('✅ Sesión de Supabase encontrada');
+          return session;
+        }
+      } catch (error) {
+        console.warn('Error al verificar sesión en Supabase:', error);
+      }
+    }
+    
+    return null;
   } catch (error) {
     console.error('Error al verificar sesión:', error);
     return null;
