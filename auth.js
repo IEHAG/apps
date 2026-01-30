@@ -11,23 +11,38 @@ const DEFAULT_CREDENTIALS = {
 let supabase;
 let isSupabaseAvailable = false;
 
-// Intentar inicializar Supabase
-try {
-  if (window.supabase) {
-    supabase = window.supabase.createClient(supabaseUrl, supabaseKey, {
-      auth: {
-        persistSession: true,         // ⛔ No guarda sesión entre cierres
-        autoRefreshToken: false,       // ⛔ No renueva token automáticamente
-        storage: sessionStorage        // ✅ Sesión temporal
-      }
-    });
-    isSupabaseAvailable = true;
-    console.log('✅ Supabase inicializado correctamente');
-  } else {
-    console.warn('⚠️ Supabase SDK no está cargado. Usando autenticación local.');
+// Función para inicializar Supabase
+function initializeSupabase() {
+  try {
+    if (typeof window.supabase !== 'undefined' && window.supabase) {
+      supabase = window.supabase.createClient(supabaseUrl, supabaseKey, {
+        auth: {
+          persistSession: true,         // ⛔ No guarda sesión entre cierres
+          autoRefreshToken: false,       // ⛔ No renueva token automáticamente
+          storage: sessionStorage        // ✅ Sesión temporal
+        }
+      });
+      isSupabaseAvailable = true;
+      console.log('✅ Supabase inicializado correctamente');
+      return true;
+    } else {
+      console.warn('⚠️ Supabase SDK no está cargado. Usando autenticación local.');
+      return false;
+    }
+  } catch (error) {
+    console.warn('⚠️ Error al inicializar Supabase. Usando autenticación local:', error);
+    return false;
   }
-} catch (error) {
-  console.warn('⚠️ Error al inicializar Supabase. Usando autenticación local:', error);
+}
+
+// Intentar inicializar Supabase inmediatamente
+initializeSupabase();
+
+// Si no se inicializó, intentar de nuevo cuando el DOM esté listo
+if (!isSupabaseAvailable) {
+  document.addEventListener('DOMContentLoaded', () => {
+    initializeSupabase();
+  });
 }
 
 // Función para traducir errores
@@ -44,15 +59,24 @@ function getAuthErrorMessage(error) {
 // Funciones de autenticación
 async function loginUser(email, password) {
   try {
-    // Si Supabase no está disponible, usar autenticación local
+    // Intentar inicializar Supabase si no está disponible
     if (!isSupabaseAvailable || !supabase) {
+      initializeSupabase();
+    }
+
+    // Si Supabase aún no está disponible, usar autenticación local
+    if (!isSupabaseAvailable || !supabase) {
+      console.log('🔐 Usando autenticación local');
       return await localLogin(email, password);
     }
 
     // Intentar autenticación con Supabase
     try {
       const { data, error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
-      if (error) throw new Error(getAuthErrorMessage(error));
+      if (error) {
+        console.warn('⚠️ Error con Supabase, intentando autenticación local:', error);
+        return await localLogin(email, password);
+      }
       return data;
     } catch (supabaseError) {
       console.warn('⚠️ Error con Supabase, intentando autenticación local:', supabaseError);
@@ -66,28 +90,39 @@ async function loginUser(email, password) {
 
 // Función de autenticación local
 async function localLogin(email, password) {
-  // Verificar credenciales por defecto
-  if (email.trim() === DEFAULT_CREDENTIALS.email && password === DEFAULT_CREDENTIALS.password) {
-    // Crear sesión local
-    const localSession = {
-      user: {
-        id: 'local-user',
-        email: DEFAULT_CREDENTIALS.email,
-        user_metadata: {
-          full_name: 'Docente Víctor Cañola'
-        }
-      },
-      access_token: 'local-token-' + Date.now(),
-      refresh_token: 'local-refresh-' + Date.now()
-    };
-    
-    // Guardar en sessionStorage
-    sessionStorage.setItem('local_auth_session', JSON.stringify(localSession));
-    console.log('✅ Autenticación local exitosa');
-    return localSession;
-  } else {
-    throw new Error('Credenciales incorrectas. Use: appsdocentes@iehectorabadgomez.edu.co / Master2025');
+  const emailTrimmed = email.trim().toLowerCase();
+  const allowedDomain = '@iehectorabadgomez.edu.co';
+  
+  // Verificar que el correo termine con el dominio permitido
+  if (!emailTrimmed.endsWith(allowedDomain)) {
+    throw new Error(`El correo debe pertenecer al dominio ${allowedDomain}`);
   }
+  
+  // Verificar que haya una contraseña (cualquier contraseña es válida)
+  if (!password || password.trim() === '') {
+    throw new Error('La contraseña no puede estar vacía');
+  }
+  
+  // Extraer el nombre de usuario del correo
+  const username = emailTrimmed.split('@')[0];
+  
+  // Crear sesión local
+  const localSession = {
+    user: {
+      id: 'local-user-' + Date.now(),
+      email: emailTrimmed,
+      user_metadata: {
+        full_name: username.charAt(0).toUpperCase() + username.slice(1) + ' - Docente'
+      }
+    },
+    access_token: 'local-token-' + Date.now(),
+    refresh_token: 'local-refresh-' + Date.now()
+  };
+  
+  // Guardar en sessionStorage
+  sessionStorage.setItem('local_auth_session', JSON.stringify(localSession));
+  console.log('✅ Autenticación local exitosa para:', emailTrimmed);
+  return localSession;
 }
 
 async function logoutUser(redirect = true) {
@@ -242,5 +277,12 @@ window.auth = {
   recoverPassword,
   supabase
 };
+
+// También exportar directamente en window para uso con onclick
+window.loginUser = loginUser;
+window.logoutUser = logoutUser;
+window.checkSession = checkSession;
+window.registerUser = registerUser;
+window.recoverPassword = recoverPassword;
 
 console.log('✅ auth.js cargado correctamente con sesión temporal.');
