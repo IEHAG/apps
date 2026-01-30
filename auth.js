@@ -87,6 +87,8 @@ async function loginUser(email, password) {
     throw error;
   }
 }
+// Exportar inmediatamente
+window.loginUser = loginUser;
 
 // Función de autenticación local
 async function localLogin(email, password) {
@@ -151,6 +153,8 @@ async function logoutUser(redirect = true) {
     }
   }
 }
+// Exportar inmediatamente
+window.logoutUser = logoutUser;
 
 async function checkSession() {
   try {
@@ -185,6 +189,8 @@ async function checkSession() {
     return null;
   }
 }
+// Exportar inmediatamente
+window.checkSession = checkSession;
 
 async function registerUser(email, password) {
   try {
@@ -199,6 +205,8 @@ async function registerUser(email, password) {
     throw error;
   }
 }
+// Exportar inmediatamente
+window.registerUser = registerUser;
 
 async function recoverPassword(email) {
   try {
@@ -215,6 +223,8 @@ async function recoverPassword(email) {
     throw error;
   }
 }
+// Exportar inmediatamente
+window.recoverPassword = recoverPassword;
 
 // Manejar la sesión actual
 async function handleAuthState() {
@@ -294,11 +304,7 @@ window.auth = {
   supabase
 };
 
-// También exportar directamente en window para uso con onclick
-window.loginUser = loginUser;
-window.logoutUser = logoutUser;
-window.checkSession = checkSession;
-window.registerUser = registerUser;
-window.recoverPassword = recoverPassword;
+// Las funciones ya están exportadas individualmente arriba
+// Mantener también el objeto auth para compatibilidad
 
 console.log('✅ auth.js cargado correctamente con sesión temporal.');

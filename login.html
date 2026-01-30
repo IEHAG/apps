@@ -101,17 +101,33 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="auth.js"></script>
     <script>
-        // Toggle Password Visibility
-        document.getElementById('passwordToggle').addEventListener('click', function () {
-            const passwordInput = document.getElementById('password');
-            const icon = document.getElementById('passwordToggleIcon');
-            passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password';
-            icon.classList.toggle('bi-eye');
-            icon.classList.toggle('bi-eye-slash');
-        });
+        // Esperar a que todo esté cargado
+        (function() {
+            // Función para verificar que las funciones estén disponibles
+            function waitForAuthFunctions(callback, maxAttempts = 50) {
+                if (window.loginUser && window.logoutUser) {
+                    callback();
+                } else if (maxAttempts > 0) {
+                    setTimeout(() => waitForAuthFunctions(callback, maxAttempts - 1), 100);
+                } else {
+                    console.error('Error: Las funciones de autenticación no se cargaron después de 5 segundos');
+                    alert('Error al cargar las funciones de autenticación. Por favor recarga la página.');
+                }
+            }
 
-        // Login Form
-        document.getElementById('loginForm').addEventListener('submit', async function (e) {
+            // Inicializar cuando las funciones estén disponibles
+            waitForAuthFunctions(function() {
+                // Toggle Password Visibility
+                document.getElementById('passwordToggle').addEventListener('click', function () {
+                    const passwordInput = document.getElementById('password');
+                    const icon = document.getElementById('passwordToggleIcon');
+                    passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password';
+                    icon.classList.toggle('bi-eye');
+                    icon.classList.toggle('bi-eye-slash');
+                });
+
+                // Login Form
+                document.getElementById('loginForm').addEventListener('submit', async function (e) {
             e.preventDefault();
 
             const email = document.getElementById('email').value;
@@ -132,46 +148,48 @@
             buttonText.classList.add('d-none');
             errorMessage.classList.add('d-none');
 
-            try {
-                await loginUser(email, password);
-                window.location.href = 'index.html';
-            } catch (error) {
-                errorMessage.classList.remove('d-none');
-                errorMessage.textContent = error.message || "Error al iniciar sesión";
-            } finally {
-                loginButton.disabled = false;
-                spinner.classList.add('d-none');
-                buttonText.classList.remove('d-none');
-            }
-        });
+                    try {
+                        await window.loginUser(email, password);
+                        window.location.href = 'index.html';
+                    } catch (error) {
+                        errorMessage.classList.remove('d-none');
+                        errorMessage.textContent = error.message || "Error al iniciar sesión";
+                    } finally {
+                        loginButton.disabled = false;
+                        spinner.classList.add('d-none');
+                        buttonText.classList.remove('d-none');
+                    }
+                });
 
-        // Forgot Password
-        document.getElementById('forgotPasswordBtn').addEventListener('click', function () {
-            const modal = new bootstrap.Modal(document.getElementById('forgotPasswordModal'));
-            modal.show();
-        });
+                // Forgot Password
+                document.getElementById('forgotPasswordBtn').addEventListener('click', function () {
+                    const modal = new bootstrap.Modal(document.getElementById('forgotPasswordModal'));
+                    modal.show();
+                });
 
-        document.getElementById('forgotPasswordForm').addEventListener('submit', async function (e) {
-            e.preventDefault();
+                document.getElementById('forgotPasswordForm').addEventListener('submit', async function (e) {
+                    e.preventDefault();
 
-            const email = document.getElementById('recoveryEmail').value;
-            const buttonText = document.getElementById('recoveryButtonText');
-            const spinner = document.getElementById('recoverySpinner');
+                    const email = document.getElementById('recoveryEmail').value;
+                    const buttonText = document.getElementById('recoveryButtonText');
+                    const spinner = document.getElementById('recoverySpinner');
 
-            buttonText.classList.add('d-none');
-            spinner.classList.remove('d-none');
+                    buttonText.classList.add('d-none');
+                    spinner.classList.remove('d-none');
 
-            try {
-                await recoverPassword(email);
-                alert('Enlace de recuperación enviado a tu correo');
-                bootstrap.Modal.getInstance(document.getElementById('forgotPasswordModal')).hide();
-            } catch (error) {
-                alert('Error: ' + error.message);
-            } finally {
-                buttonText.classList.remove('d-none');
-                spinner.classList.add('d-none');
-            }
-        });
+                    try {
+                        await window.recoverPassword(email);
+                        alert('Enlace de recuperación enviado a tu correo');
+                        bootstrap.Modal.getInstance(document.getElementById('forgotPasswordModal')).hide();
+                    } catch (error) {
+                        alert('Error: ' + error.message);
+                    } finally {
+                        buttonText.classList.remove('d-none');
+                        spinner.classList.add('d-none');
+                    }
+                });
+            });
+        })();
     </script>
 </body>
 
