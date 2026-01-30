@@ -128,25 +128,25 @@
 
                 // Login Form
                 document.getElementById('loginForm').addEventListener('submit', async function (e) {
-            e.preventDefault();
+                    e.preventDefault();
 
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const loginButton = document.getElementById('loginButton');
-            const spinner = document.getElementById('loginSpinner');
-            const errorMessage = document.getElementById('errorMessage');
-            const buttonText = document.querySelector('.button-text');
+                    const email = document.getElementById('email').value;
+                    const password = document.getElementById('password').value;
+                    const loginButton = document.getElementById('loginButton');
+                    const spinner = document.getElementById('loginSpinner');
+                    const errorMessage = document.getElementById('errorMessage');
+                    const buttonText = document.querySelector('.button-text');
 
-            if (!email || !password) {
-                errorMessage.classList.remove('d-none');
-                errorMessage.textContent = "Por favor complete todos los campos";
-                return;
-            }
+                    if (!email || !password) {
+                        errorMessage.classList.remove('d-none');
+                        errorMessage.textContent = "Por favor complete todos los campos";
+                        return;
+                    }
 
-            loginButton.disabled = true;
-            spinner.classList.remove('d-none');
-            buttonText.classList.add('d-none');
-            errorMessage.classList.add('d-none');
+                    loginButton.disabled = true;
+                    spinner.classList.remove('d-none');
+                    buttonText.classList.add('d-none');
+                    errorMessage.classList.add('d-none');
 
                     try {
                         await window.loginUser(email, password);
