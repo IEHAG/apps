@@ -239,15 +239,31 @@ async function handleAuthState() {
     try {
       let user;
       // Obtener usuario según el tipo de sesión
-      if (session.user && session.user.id === 'local-user') {
+      if (session.user && session.user.id && session.user.id.startsWith('local-user')) {
         // Sesión local
         user = session.user;
         console.log('👤 Usuario autenticado (local):', user);
       } else if (isSupabaseAvailable && supabase) {
         // Sesión de Supabase
-        const { data: { user: supabaseUser } } = await supabase.auth.getUser();
-        user = supabaseUser;
-        console.log('👤 Usuario autenticado (Supabase):', user);
+        try {
+          const { data: { user: supabaseUser } } = await supabase.auth.getUser();
+          if (supabaseUser) {
+            user = supabaseUser;
+            console.log('👤 Usuario autenticado (Supabase):', user);
+          } else {
+            // Si no hay usuario de Supabase pero hay sesión, usar la sesión directamente
+            user = session.user;
+            console.log('👤 Usuario autenticado (sesión):', user);
+          }
+        } catch (error) {
+          // Si falla obtener usuario de Supabase, usar la sesión directamente
+          user = session.user;
+          console.log('👤 Usuario autenticado (sesión fallback):', user);
+        }
+      } else {
+        // Si no hay Supabase disponible, usar la sesión directamente
+        user = session.user;
+        console.log('👤 Usuario autenticado (sesión directa):', user);
       }
 
       const protectedContent = document.getElementById('protectedContent');
