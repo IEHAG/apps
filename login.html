@@ -102,21 +102,33 @@
     <script src="auth.js"></script>
     <script>
         // Esperar a que todo esté cargado
-        (function() {
+        document.addEventListener('DOMContentLoaded', function() {
             // Función para verificar que las funciones estén disponibles
             function waitForAuthFunctions(callback, maxAttempts = 50) {
-                if (window.loginUser && window.logoutUser) {
+                console.log('Verificando funciones...', {
+                    loginUser: typeof window.loginUser,
+                    logoutUser: typeof window.logoutUser,
+                    auth: typeof window.auth
+                });
+                
+                if (window.loginUser && typeof window.loginUser === 'function') {
                     callback();
                 } else if (maxAttempts > 0) {
                     setTimeout(() => waitForAuthFunctions(callback, maxAttempts - 1), 100);
                 } else {
                     console.error('Error: Las funciones de autenticación no se cargaron después de 5 segundos');
+                    console.error('Estado actual:', {
+                        loginUser: window.loginUser,
+                        logoutUser: window.logoutUser,
+                        auth: window.auth
+                    });
                     alert('Error al cargar las funciones de autenticación. Por favor recarga la página.');
                 }
             }
 
             // Inicializar cuando las funciones estén disponibles
             waitForAuthFunctions(function() {
+                console.log('✅ Funciones de autenticación disponibles, inicializando...');
                 // Toggle Password Visibility
                 document.getElementById('passwordToggle').addEventListener('click', function () {
                     const passwordInput = document.getElementById('password');

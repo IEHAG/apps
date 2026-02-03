@@ -11,6 +11,9 @@ const DEFAULT_CREDENTIALS = {
 let supabase;
 let isSupabaseAvailable = false;
 
+// Pre-declarar funciones para exportarlas inmediatamente
+let loginUser, logoutUser, checkSession, registerUser, recoverPassword;
+
 // Función para inicializar Supabase
 function initializeSupabase() {
   try {
@@ -87,8 +90,6 @@ async function loginUser(email, password) {
     throw error;
   }
 }
-// Exportar inmediatamente
-window.loginUser = loginUser;
 
 // Función de autenticación local
 async function localLogin(email, password) {
@@ -153,8 +154,6 @@ async function logoutUser(redirect = true) {
     }
   }
 }
-// Exportar inmediatamente
-window.logoutUser = logoutUser;
 
 async function checkSession() {
   try {
@@ -189,8 +188,6 @@ async function checkSession() {
     return null;
   }
 }
-// Exportar inmediatamente
-window.checkSession = checkSession;
 
 async function registerUser(email, password) {
   try {
@@ -205,8 +202,6 @@ async function registerUser(email, password) {
     throw error;
   }
 }
-// Exportar inmediatamente
-window.registerUser = registerUser;
 
 async function recoverPassword(email) {
   try {
@@ -223,8 +218,6 @@ async function recoverPassword(email) {
     throw error;
   }
 }
-// Exportar inmediatamente
-window.recoverPassword = recoverPassword;
 
 // Manejar la sesión actual
 async function handleAuthState() {
@@ -295,16 +288,32 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Exportar funciones globalmente para usarlas desde HTML
-window.auth = {
-  loginUser,
-  logoutUser,
-  checkSession,
-  registerUser,
-  recoverPassword,
-  supabase
-};
-
-// Las funciones ya están exportadas individualmente arriba
-// Mantener también el objeto auth para compatibilidad
+// Asegurar que todas las funciones estén disponibles inmediatamente
+// Usar una función inmediatamente invocada para garantizar la ejecución
+(function exportAuthFunctions() {
+  try {
+    window.auth = {
+      loginUser,
+      logoutUser,
+      checkSession,
+      registerUser,
+      recoverPassword,
+      supabase
+    };
+    
+    // Exportar también directamente en window para uso inmediato
+    window.loginUser = loginUser;
+    window.logoutUser = logoutUser;
+    window.checkSession = checkSession;
+    window.registerUser = registerUser;
+    window.recoverPassword = recoverPassword;
+    
+    console.log('✅ auth.js: Funciones exportadas correctamente');
+    console.log('✅ window.loginUser disponible:', typeof window.loginUser);
+    console.log('✅ window.logoutUser disponible:', typeof window.logoutUser);
+  } catch (error) {
+    console.error('❌ Error al exportar funciones:', error);
+  }
+})();
 
 console.log('✅ auth.js cargado correctamente con sesión temporal.');
