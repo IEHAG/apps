@@ -11,9 +11,6 @@ const DEFAULT_CREDENTIALS = {
 let supabase;
 let isSupabaseAvailable = false;
 
-// Pre-declarar funciones para exportarlas inmediatamente
-let loginUser, logoutUser, checkSession, registerUser, recoverPassword;
-
 // Función para inicializar Supabase
 function initializeSupabase() {
   try {
@@ -282,38 +279,35 @@ async function handleAuthState() {
   console.log('✅ Página permitida sin redirección:', currentPath);
 }
 
+// Exportar funciones globalmente para usarlas desde HTML
+// Asegurar que todas las funciones estén disponibles inmediatamente
+try {
+  window.auth = {
+    loginUser,
+    logoutUser,
+    checkSession,
+    registerUser,
+    recoverPassword,
+    supabase
+  };
+  
+  // Exportar también directamente en window para uso inmediato
+  window.loginUser = loginUser;
+  window.logoutUser = logoutUser;
+  window.checkSession = checkSession;
+  window.registerUser = registerUser;
+  window.recoverPassword = recoverPassword;
+  
+  console.log('✅ auth.js: Funciones exportadas correctamente');
+  console.log('✅ window.loginUser disponible:', typeof window.loginUser);
+  console.log('✅ window.logoutUser disponible:', typeof window.logoutUser);
+} catch (error) {
+  console.error('❌ Error al exportar funciones:', error);
+}
+
 // Ejecutar cuando el DOM esté cargado
 document.addEventListener('DOMContentLoaded', () => {
   handleAuthState();
 });
-
-// Exportar funciones globalmente para usarlas desde HTML
-// Asegurar que todas las funciones estén disponibles inmediatamente
-// Usar una función inmediatamente invocada para garantizar la ejecución
-(function exportAuthFunctions() {
-  try {
-    window.auth = {
-      loginUser,
-      logoutUser,
-      checkSession,
-      registerUser,
-      recoverPassword,
-      supabase
-    };
-    
-    // Exportar también directamente en window para uso inmediato
-    window.loginUser = loginUser;
-    window.logoutUser = logoutUser;
-    window.checkSession = checkSession;
-    window.registerUser = registerUser;
-    window.recoverPassword = recoverPassword;
-    
-    console.log('✅ auth.js: Funciones exportadas correctamente');
-    console.log('✅ window.loginUser disponible:', typeof window.loginUser);
-    console.log('✅ window.logoutUser disponible:', typeof window.logoutUser);
-  } catch (error) {
-    console.error('❌ Error al exportar funciones:', error);
-  }
-})();
 
 console.log('✅ auth.js cargado correctamente con sesión temporal.');
