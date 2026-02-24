@@ -95,7 +95,14 @@ const apps = [
     { name: 'StudyX', category: 'education', logoUrl: 'https://studyx.ai/favicon.ico', color: '#f22828', free: true, description: 'Ayuda escolar con IA.', url: 'https://studyx.ai' },
     { name: 'Teachy', category: 'education', logoUrl: 'https://www.teachy.app/favicon.ico', color: '#f22828', free: true, description: 'Plataforma educativa con IA para profesores.', url: 'https://www.teachy.app/es' },
     { name: 'Wolfram Alpha', category: 'education', logoUrl: 'https://www.wolframalpha.com/favicon.ico', color: '#f22828', free: true, description: 'Motor computacional para matemáticas y ciencias.', url: 'https://wolframalpha.com' },
-
+    { name: 'MagicSchool AI', category: 'education', logoUrl: 'https://www.magicschool.ai/favicon.ico', color: '#f22828', free: true, description: 'Plataforma de IA para docentes que genera planes de clase, evaluaciones y materiales educativos.', url: 'https://www.magicschool.ai' },
+    { name: 'Curipod', category: 'education', logoUrl: 'https://curipod.com/favicon.ico', color: '#f22828', free: true, description: 'Crea lecciones interactivas con encuestas, preguntas y actividades en minutos.', url: 'https://curipod.com' },
+    { name: 'Diffit', category: 'education', logoUrl: 'https://www.diffit.me/favicon.ico', color: '#f22828', free: true, description: 'Genera recursos educativos adaptados por nivel automáticamente.', url: 'https://www.diffit.me' },
+    { name: 'LessonPlans.ai', category: 'education', logoUrl: 'https://lessonplans.ai/favicon.ico', color: '#f22828', free: true, description: 'Creador automático de planes de clase con IA.', url: 'https://lessonplans.ai' },
+    { name: 'TeachMateAI', category: 'education', logoUrl: 'https://teachmateai.com/favicon.ico', color: '#f22828', free: true, description: 'Asistente IA para planificación docente, feedback y actividades.', url: 'https://teachmateai.com' },
+    { name: 'Brisk Teaching', category: 'education', logoUrl: 'https://www.briskteaching.com/favicon.ico', color: '#f22828', free: true, description: 'Extensión IA para crear recursos educativos y dar retroalimentación.', url: 'https://www.briskteaching.com' },
+    { name: 'Gradescope AI', category: 'education', logoUrl: 'https://www.gradescope.com/favicon.ico', color: '#f22828', free: true, description: 'Herramienta para evaluar tareas automáticamente con IA.', url: 'https://www.gradescope.com' },
+    { name: 'Explainpaper', category: 'education', logoUrl: 'https://www.explainpaper.com/favicon.ico', color: '#f22828', free: true, description: 'Explica artículos académicos y textos complejos con IA.', url: 'https://www.explainpaper.com' },
 
     // 🌐 Otros
     { name: 'AI Findy', category: 'others', logoUrl: 'https://aifindy.com/favicon.ico', color: '#a8a29e', free: true, description: 'Directorio de herramientas de IA.', url: 'https://aifindy.com/' },
