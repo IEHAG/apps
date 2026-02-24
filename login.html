@@ -101,107 +101,141 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="auth.js"></script>
     <script>
-        // Esperar a que todo esté cargado
-        document.addEventListener('DOMContentLoaded', function() {
-            // Función para verificar que las funciones estén disponibles
-            function waitForAuthFunctions(callback, maxAttempts = 50) {
-                console.log('Verificando funciones...', {
-                    loginUser: typeof window.loginUser,
-                    logoutUser: typeof window.logoutUser,
-                    auth: typeof window.auth
-                });
-                
-                if (window.loginUser && typeof window.loginUser === 'function') {
-                    callback();
-                } else if (maxAttempts > 0) {
-                    setTimeout(() => waitForAuthFunctions(callback, maxAttempts - 1), 100);
+        // Esperar a que el DOM y los scripts estén cargados
+        window.addEventListener('load', function() {
+            // Esperar un momento adicional para asegurar que auth.js esté completamente cargado
+            setTimeout(function() {
+                initializeLogin();
+            }, 100);
+        });
+
+        function initializeLogin() {
+            // Verificar que las funciones estén disponibles
+            if (!window.loginUser) {
+                console.error('❌ loginUser no está disponible');
+                // Intentar usar window.auth como fallback
+                if (window.auth && window.auth.loginUser) {
+                    window.loginUser = window.auth.loginUser;
+                    window.logoutUser = window.auth.logoutUser;
+                    window.recoverPassword = window.auth.recoverPassword;
                 } else {
-                    console.error('Error: Las funciones de autenticación no se cargaron después de 5 segundos');
-                    console.error('Estado actual:', {
-                        loginUser: window.loginUser,
-                        logoutUser: window.logoutUser,
-                        auth: window.auth
-                    });
-                    alert('Error al cargar las funciones de autenticación. Por favor recarga la página.');
+                    alert('Error: Las funciones de autenticación no están disponibles. Por favor recarga la página.');
+                    return;
                 }
             }
 
-            // Inicializar cuando las funciones estén disponibles
-            waitForAuthFunctions(function() {
-                console.log('✅ Funciones de autenticación disponibles, inicializando...');
-                // Toggle Password Visibility
-                document.getElementById('passwordToggle').addEventListener('click', function () {
-                    const passwordInput = document.getElementById('password');
-                    const icon = document.getElementById('passwordToggleIcon');
-                    passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password';
-                    icon.classList.toggle('bi-eye');
-                    icon.classList.toggle('bi-eye-slash');
-                });
+            console.log('✅ Inicializando formulario de login...');
 
-                // Login Form
-                document.getElementById('loginForm').addEventListener('submit', async function (e) {
-                    e.preventDefault();
+        // Toggle Password Visibility
+            const passwordToggle = document.getElementById('passwordToggle');
+            if (passwordToggle) {
+                passwordToggle.addEventListener('click', function () {
+            const passwordInput = document.getElementById('password');
+            const icon = document.getElementById('passwordToggleIcon');
+                    if (passwordInput && icon) {
+            passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password';
+            icon.classList.toggle('bi-eye');
+            icon.classList.toggle('bi-eye-slash');
+                    }
+        });
+            }
 
-                    const email = document.getElementById('email').value;
-                    const password = document.getElementById('password').value;
-                    const loginButton = document.getElementById('loginButton');
-                    const spinner = document.getElementById('loginSpinner');
-                    const errorMessage = document.getElementById('errorMessage');
-                    const buttonText = document.querySelector('.button-text');
+        // Login Form
+            const loginForm = document.getElementById('loginForm');
+            if (loginForm) {
+                loginForm.addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const loginButton = document.getElementById('loginButton');
+            const spinner = document.getElementById('loginSpinner');
+            const errorMessage = document.getElementById('errorMessage');
+            const buttonText = document.querySelector('.button-text');
 
                     if (!email || !password) {
-                        errorMessage.classList.remove('d-none');
-                        errorMessage.textContent = "Por favor complete todos los campos";
+                        if (errorMessage) {
+                            errorMessage.classList.remove('d-none');
+                            const errorText = document.getElementById('errorText');
+                            if (errorText) {
+                                errorText.textContent = "Por favor complete todos los campos";
+                            } else {
+                                errorMessage.textContent = "Por favor complete todos los campos";
+                            }
+                        }
                         return;
                     }
 
-                    loginButton.disabled = true;
-                    spinner.classList.remove('d-none');
-                    buttonText.classList.add('d-none');
-                    errorMessage.classList.add('d-none');
+                    if (loginButton) loginButton.disabled = true;
+                    if (spinner) spinner.classList.remove('d-none');
+                    if (buttonText) buttonText.classList.add('d-none');
+                    if (errorMessage) errorMessage.classList.add('d-none');
 
                     try {
-                        await window.loginUser(email, password);
-                        window.location.href = 'index.html';
+                        const loginFn = window.loginUser || (window.auth && window.auth.loginUser);
+                        if (!loginFn) {
+                            throw new Error('Función de login no disponible');
+                        }
+                        await loginFn(email, password);
+                window.location.href = 'index.html';
                     } catch (error) {
-                        errorMessage.classList.remove('d-none');
-                        errorMessage.textContent = error.message || "Error al iniciar sesión";
+                        console.error('Error en login:', error);
+                        if (errorMessage) {
+                            errorMessage.classList.remove('d-none');
+                            const errorText = document.getElementById('errorText');
+                            if (errorText) {
+                                errorText.textContent = error.message || "Error al iniciar sesión";
+                            } else {
+                                errorMessage.textContent = error.message || "Error al iniciar sesión";
+                            }
+                        }
                     } finally {
-                        loginButton.disabled = false;
-                        spinner.classList.add('d-none');
-                        buttonText.classList.remove('d-none');
+                        if (loginButton) loginButton.disabled = false;
+                        if (spinner) spinner.classList.add('d-none');
+                        if (buttonText) buttonText.classList.remove('d-none');
                     }
                 });
+            }
 
-                // Forgot Password
-                document.getElementById('forgotPasswordBtn').addEventListener('click', function () {
-                    const modal = new bootstrap.Modal(document.getElementById('forgotPasswordModal'));
-                    modal.show();
-                });
-
-                document.getElementById('forgotPasswordForm').addEventListener('submit', async function (e) {
-                    e.preventDefault();
-
-                    const email = document.getElementById('recoveryEmail').value;
-                    const buttonText = document.getElementById('recoveryButtonText');
-                    const spinner = document.getElementById('recoverySpinner');
-
-                    buttonText.classList.add('d-none');
-                    spinner.classList.remove('d-none');
-
-                    try {
-                        await window.recoverPassword(email);
-                        alert('Enlace de recuperación enviado a tu correo');
-                        bootstrap.Modal.getInstance(document.getElementById('forgotPasswordModal')).hide();
-                    } catch (error) {
-                        alert('Error: ' + error.message);
-                    } finally {
-                        buttonText.classList.remove('d-none');
-                        spinner.classList.add('d-none');
-                    }
-                });
-            });
+        // Forgot Password
+            const forgotPasswordBtn = document.getElementById('forgotPasswordBtn');
+            if (forgotPasswordBtn) {
+                forgotPasswordBtn.addEventListener('click', function () {
+            const modal = new bootstrap.Modal(document.getElementById('forgotPasswordModal'));
+            modal.show();
         });
+            }
+
+            const forgotPasswordForm = document.getElementById('forgotPasswordForm');
+            if (forgotPasswordForm) {
+                forgotPasswordForm.addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const email = document.getElementById('recoveryEmail').value;
+            const buttonText = document.getElementById('recoveryButtonText');
+            const spinner = document.getElementById('recoverySpinner');
+
+                    if (buttonText) buttonText.classList.add('d-none');
+                    if (spinner) spinner.classList.remove('d-none');
+
+                    try {
+                        const recoverFn = window.recoverPassword || (window.auth && window.auth.recoverPassword);
+                        if (!recoverFn) {
+                            throw new Error('Función de recuperación no disponible');
+                        }
+                        await recoverFn(email);
+                alert('Enlace de recuperación enviado a tu correo');
+                        const modal = bootstrap.Modal.getInstance(document.getElementById('forgotPasswordModal'));
+                        if (modal) modal.hide();
+            } catch (error) {
+                alert('Error: ' + error.message);
+            } finally {
+                        if (buttonText) buttonText.classList.remove('d-none');
+                        if (spinner) spinner.classList.add('d-none');
+                    }
+                });
+            }
+        }
     </script>
 </body>
 

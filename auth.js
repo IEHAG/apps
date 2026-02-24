@@ -281,33 +281,43 @@ async function handleAuthState() {
 
 // Exportar funciones globalmente para usarlas desde HTML
 // Asegurar que todas las funciones estén disponibles inmediatamente
-try {
-  window.auth = {
-    loginUser,
-    logoutUser,
-    checkSession,
-    registerUser,
-    recoverPassword,
-    supabase
-  };
-  
-  // Exportar también directamente en window para uso inmediato
-  window.loginUser = loginUser;
-  window.logoutUser = logoutUser;
-  window.checkSession = checkSession;
-  window.registerUser = registerUser;
-  window.recoverPassword = recoverPassword;
-  
-  console.log('✅ auth.js: Funciones exportadas correctamente');
-  console.log('✅ window.loginUser disponible:', typeof window.loginUser);
-  console.log('✅ window.logoutUser disponible:', typeof window.logoutUser);
-} catch (error) {
-  console.error('❌ Error al exportar funciones:', error);
-}
+(function() {
+  'use strict';
+  try {
+    // Exportar en objeto auth
+    window.auth = {
+      loginUser: loginUser,
+      logoutUser: logoutUser,
+      checkSession: checkSession,
+      registerUser: registerUser,
+      recoverPassword: recoverPassword,
+      supabase: supabase
+    };
+    
+    // Exportar también directamente en window para uso inmediato
+    window.loginUser = loginUser;
+    window.logoutUser = logoutUser;
+    window.checkSession = checkSession;
+    window.registerUser = registerUser;
+    window.recoverPassword = recoverPassword;
+    
+    console.log('✅ auth.js: Funciones exportadas correctamente');
+    console.log('✅ window.loginUser:', typeof window.loginUser);
+    console.log('✅ window.logoutUser:', typeof window.logoutUser);
+    console.log('✅ window.auth:', typeof window.auth);
+  } catch (error) {
+    console.error('❌ Error al exportar funciones:', error);
+  }
+})();
 
 // Ejecutar cuando el DOM esté cargado
-document.addEventListener('DOMContentLoaded', () => {
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => {
+    handleAuthState();
+  });
+} else {
+  // DOM ya está cargado
   handleAuthState();
-});
+}
 
 console.log('✅ auth.js cargado correctamente con sesión temporal.');
