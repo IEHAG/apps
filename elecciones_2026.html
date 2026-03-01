@@ -277,6 +277,52 @@
     .close-modal:hover {
       color: var(--yellow);
     }
+
+    .download-btn {
+      position: absolute;
+      top: 50%;
+      right: 40px;
+      transform: translateY(-50%);
+      background: var(--gold);
+      color: #000;
+      padding: 0.8rem 1.5rem;
+      border-radius: 12px;
+      font-family: 'Bangers', cursive;
+      font-size: 1rem;
+      text-decoration: none;
+      letter-spacing: 1px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+      transition: all 0.3s ease;
+      z-index: 2001;
+      min-width: 120px;
+      text-align: center;
+      justify-content: center;
+    }
+
+    .download-btn span {
+      display: block;
+      line-height: 1.2;
+    }
+
+    .download-btn:hover {
+      transform: translateY(-50%) scale(1.05);
+      box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5);
+    }
+
+    @media (max-width: 1024px) {
+      .download-btn {
+        right: 50%;
+        top: auto;
+        bottom: 30px;
+        transform: translateX(50%);
+        width: auto;
+        padding: 1rem 2rem;
+      }
+    }
   </style>
 </head>
 
@@ -427,6 +473,9 @@
   <div class="image-modal" id="imageModal">
     <span class="close-modal">&times;</span>
     <img class="modal-content" id="modalImg">
+    <a href="#" class="download-btn" id="downloadBtn" download>
+      <span id="downloadBtnText">📥 DESCARGAR</span>
+    </a>
   </div>
 
   <script>
@@ -486,12 +535,29 @@
     // Image Zoom Logic
     const modal = document.getElementById('imageModal');
     const modalImg = document.getElementById('modalImg');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const downloadBtnText = document.getElementById('downloadBtnText');
     const closeBtn = document.querySelector('.close-modal');
 
     document.querySelectorAll('.photo-wrap img').forEach(img => {
       img.addEventListener('click', () => {
         modal.classList.add('active');
-        modalImg.src = img.src;
+        const imgSrc = img.src;
+        modalImg.src = imgSrc;
+        downloadBtn.href = imgSrc;
+
+        // Extract filename for download attribute
+        const fileName = decodeURIComponent(imgSrc.split('/').pop());
+        downloadBtn.setAttribute('download', fileName);
+
+        // Detect category and update button text
+        let role = "IMAGEN";
+        if (fileName.includes("-Personería")) role = "PERSONERO";
+        else if (fileName.includes("-Contraloría")) role = "CONTRALOR";
+        else if (fileName.includes("-Líder Soyed")) role = "LÍDER";
+
+        downloadBtnText.innerHTML = `📥 DESCARGAR<br>${role}`;
+
         document.body.style.overflow = 'hidden'; // Prevent scroll
       });
     });
