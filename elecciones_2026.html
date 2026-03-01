@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Elecciones 2026 - IEHAG</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;600;700;900&display=swap"
+    rel="stylesheet">
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --primary-red: #e63946;
+      --primary-green: #2d6a4f;
+      --primary-orange: #e76f51;
+      --yellow: #FFD700;
+      --gold: linear-gradient(135deg, #FFD700, #FFA500);
+      --dark: #0a0a12;
+      --card-bg: rgba(26, 26, 46, 0.8);
+      --white: #f8f9fa;
+      --glass: rgba(255, 255, 255, 0.03);
+      --glass-border: rgba(255, 255, 255, 0.1);
+    }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background-color: var(--dark);
+      background-image:
+        radial-gradient(at 0% 0%, rgba(230, 57, 70, 0.05) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(45, 106, 79, 0.05) 0px, transparent 50%);
+      color: var(--white);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #001d3d 0%, #000814 100%);
+      text-align: center;
+      padding: 8rem 1rem 6rem;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 2px solid var(--yellow);
+    }
+
+    .school-badge {
+      background: var(--gold);
+      color: #000;
+      font-family: 'Bangers', cursive;
+      font-size: 0.9rem;
+      padding: 0.5rem 1.5rem;
+      border-radius: 50px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero h1 {
+      font-family: 'Bangers', cursive;
+      font-size: clamp(4rem, 15vw, 9rem);
+      letter-spacing: 6px;
+      line-height: 0.9;
+      background: linear-gradient(180deg, #FFD700 0%, #FFA500 50%, #FF6B00 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 20px rgba(255, 165, 0, 0.4));
+      margin: 1.5rem 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .nav-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      padding: 2rem 1rem;
+      background: rgba(10, 10, 18, 0.9);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid var(--glass-border);
+    }
+
+    .nav-tab {
+      padding: 0.8rem 2rem;
+      border-radius: 12px;
+      font-family: 'Bangers', cursive;
+      font-size: 1.2rem;
+      letter-spacing: 1px;
+      cursor: pointer;
+      border: 1px solid var(--glass-border);
+      transition: all 0.4s;
+      text-decoration: none;
+    }
+
+    .nav-tab.personeria {
+      color: #ff4d6d;
+      background: rgba(230, 57, 70, 0.1);
+    }
+
+    .nav-tab.contraloria {
+      color: #52b788;
+      background: rgba(45, 106, 79, 0.1);
+    }
+
+    .nav-tab.lider_soyed {
+      color: #f4a261;
+      background: rgba(231, 111, 81, 0.1);
+    }
+
+    .election-section {
+      padding-bottom: 5rem;
+    }
+
+    .section-header {
+      padding: 2rem;
+      border-radius: 0 0 30px 30px;
+      margin-bottom: 2rem;
+    }
+
+    .carousel-container {
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .carousel-track {
+      display: flex;
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .candidate-card {
+      min-width: 100%;
+      background: var(--card-bg);
+      border-radius: 24px;
+      border: 1px solid var(--glass-border);
+      margin: 0;
+    }
+
+    .card-header {
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: white;
+      border-radius: 24px 24px 0 0;
+    }
+
+    .photo-wrap {
+      width: 100%;
+      height: 450px;
+      overflow: hidden;
+      background: rgba(0, 0, 0, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .photo-wrap img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    .card-body {
+      padding: 1.5rem;
+      text-align: center;
+    }
+
+    .candidate-name {
+      font-size: 1.8rem;
+      font-weight: 900;
+      margin-bottom: 1rem;
+    }
+
+    .carousel-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 0, 0, 0.6);
+      color: white;
+      border: 1px solid var(--yellow);
+      padding: 1rem;
+      cursor: pointer;
+      z-index: 10;
+      border-radius: 50%;
+    }
+
+    .prev-btn {
+      left: 10px;
+    }
+
+    .next-btn {
+      right: 10px;
+    }
+
+    .carousel-dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 1rem;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      cursor: pointer;
+    }
+
+    .dot.active {
+      background: var(--yellow);
+      transform: scale(1.2);
+    }
+
+    /* Modal for Image Zoom */
+    .image-modal {
+      display: none;
+      position: fixed;
+      z-index: 2000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.95);
+      backdrop-filter: blur(5px);
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .image-modal.active {
+      display: flex;
+      opacity: 1;
+    }
+
+    .modal-content {
+      max-width: 90%;
+      max-height: 90%;
+      box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
+      border: 2px solid var(--glass-border);
+      border-radius: 10px;
+      object-fit: contain;
+      transform: scale(0.9);
+      transition: transform 0.3s ease;
+    }
+
+    .image-modal.active .modal-content {
+      transform: scale(1);
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      color: #f1f1f1;
+      font-size: 40px;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 2001;
+      transition: color 0.3s;
+    }
+
+    .close-modal:hover {
+      color: var(--yellow);
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="hero">
+    <div class="school-badge">Inst. Educativa Héctor Abad Gómez</div>
+    <h1>ELECCIONES<br>2026</h1>
+    <p>¡Tu voto hace la diferencia!</p>
+  </header>
+
+  <nav class="nav-tabs">
+    <a href="#personeria" class="nav-tab personeria">🏛️ Personería</a>
+    <a href="#contraloria" class="nav-tab contraloria">📊 Contraloría</a>
+    <a href="#lider_soyed" class="nav-tab lider_soyed">⭐ Líder Soyed</a>
+  </nav>
+
+  <section class="election-section" id="personeria">
+    <div class="section-header" style="background: linear-gradient(135deg, #e63946 0%, #c1121f 100%)">
+      <h2 style="text-align: center;">🏛️ Personería Estudiantil</h2>
+    </div>
+    <div class="carousel-container">
+      <button class="carousel-btn prev-btn" onclick="slide('personeria', -1)">&#10094;</button>
+      <div class="carousel-track" id="track-personeria">
+        <div class="candidate-card" style="--card-color: #e63946">
+          <div class="card-header" style="background: #e63946"><span>#01</span></div>
+          <div class="photo-wrap"><img src="imgcandidatos/1.Juan Pablo Legarda Velásquez-Personería.png"></div>
+          <div class="card-body">
+            <h3 class="candidate-name">Juan Pablo Legarda Velásquez</h3>
+          </div>
+        </div>
+        <div class="candidate-card" style="--card-color: #e63946">
+          <div class="card-header" style="background: #e63946"><span>#02</span></div>
+          <div class="photo-wrap"><img src="imgcandidatos/2.Samantha Rivera Posada-Personería.png"></div>
+          <div class="card-body">
+            <h3 class="candidate-name">Samantha Rivera Posada</h3>
+          </div>
+        </div>
+        <div class="candidate-card" style="--card-color: #e63946">
+          <div class="card-header" style="background: #e63946"><span>#03</span></div>
+          <div class="photo-wrap"><img src="imgcandidatos/3.Miguel Ángel Gallego Londoño-Personería.png"></div>
+          <div class="card-body">
+            <h3 class="candidate-name">Miguel Ángel Gallego Londoño</h3>
+          </div>
+        </div>
+        <div class="candidate-card" style="--card-color: #e63946">
+          <div class="card-header" style="background: #e63946"><span>#04</span></div>
+          <div class="photo-wrap"><img src="imgcandidatos/4.Danny Vásquez Tascón-Personería.png"></div>
+          <div class="card-body">
+            <h3 class="candidate-name">Danny Vásquez Tascón</h3>
+          </div>
+        </div>
+        <div class="candidate-card" style="--card-color: #e63946">
+          <div class="card-header" style="background: #e63946"><span>#05</span></div>
+          <div class="photo-wrap"><img src="imgcandidatos/5.Manuela Vallejo Ledesma-Personería.png"></div>
+          <div class="card-body">
+            <h3 class="candidate-name">Manuela Vallejo Ledesma</h3>
+          </div>
+        </div>
+      </div>
+      <button class="carousel-btn next-btn" onclick="slide('personeria', 1)">&#10095;</button>
+    </div>
+    <div class="carousel-dots" id="dots-personeria"></div>
+  </section>
+
+  <section class="election-section" id="contraloria">
+    <div class="section-header" style="background: linear-gradient(135deg, #2d6a4f 0%, #1b4332 100%)">
+      <h2 style="text-align: center;">📊 Contraloría</h2>
+    </div>
+    <div class="carousel-container">
+      <button class="carousel-btn prev-btn" onclick="slide('contraloria', -1)">&#10094;</button>
+      <div class="carousel-track" id="track-contraloria">
+        <div class="candidate-card" style="--card-color: #2d6a4f">
+          <div class="card-header" style="background: #2d6a4f"><span>#01</span></div>
+          <div class="photo-wrap"><img src="imgcandidatos/1.Saray Michel Castaño Correa-Contraloría.png"></div>
+          <div class="card-body">
+            <h3 class="candidate-name">Saray Michel Castaño Correa</h3>
+          </div>
+        </div>
+        <div class="candidate-card" style="--card-color: #2d6a4f">
+          <div class="card-header" style="background: #2d6a4f"><span>#02</span></div>
+          <div class="photo-wrap"><img src="imgcandidatos/2.Jesús David Mendoza Restrepo-Contraloría.png"></div>
+          <div class="card-body">
+            <h3 class="candidate-name">Jesús David Mendoza Restrepo</h3>
+          </div>
+        </div>
+        <div class="candidate-card" style="--card-color: #2d6a4f">
+          <div class="card-header" style="background: #2d6a4f"><span>#03</span></div>
+          <div class="photo-wrap"><img src="imgcandidatos/3.Manuel Santiago Salazar Montealegre-Contraloría.png"></div>
+          <div class="card-body">
+            <h3 class="candidate-name">Manuel Santiago Salazar Montealegre</h3>
+          </div>
+        </div>
+        <div class="candidate-card" style="--card-color: #2d6a4f">
+          <div class="card-header" style="background: #2d6a4f"><span>#04</span></div>
+          <div class="photo-wrap"><img src="imgcandidatos/4.Karol Lizeth Medellín Anaya-Contraloría.png"></div>
+          <div class="card-body">
+            <h3 class="candidate-name">Karol Lizeth Medellín Anaya</h3>
+          </div>
+        </div>
+        <div class="candidate-card" style="--card-color: #2d6a4f">
+          <div class="card-header" style="background: #2d6a4f"><span>#05</span></div>
+          <div class="photo-wrap"><img src="imgcandidatos/5.Sara Bolívar Zapata-Contraloría.png"></div>
+          <div class="card-body">
+            <h3 class="candidate-name">Sara Bolívar Zapata</h3>
+          </div>
+        </div>
+        <div class="candidate-card" style="--card-color: #2d6a4f">
+          <div class="card-header" style="background: #2d6a4f"><span>#06</span></div>
+          <div class="photo-wrap"><img src="imgcandidatos/6.Nicolle Dahiana Arroyave Sepúlveda-Contraloría.png"></div>
+          <div class="card-body">
+            <h3 class="candidate-name">Nicolle Dahiana Arroyave Sepúlveda</h3>
+          </div>
+        </div>
+      </div>
+      <button class="carousel-btn next-btn" onclick="slide('contraloria', 1)">&#10095;</button>
+    </div>
+    <div class="carousel-dots" id="dots-contraloria"></div>
+  </section>
+
+  <section class="election-section" id="lider_soyed">
+    <div class="section-header" style="background: linear-gradient(135deg, #e76f51 0%, #d62828 100%)">
+      <h2 style="text-align: center;">⭐ Líder Soyed</h2>
+    </div>
+    <div class="carousel-container">
+      <button class="carousel-btn prev-btn" onclick="slide('lider_soyed', -1)">&#10094;</button>
+      <div class="carousel-track" id="track-lider_soyed">
+        <div class="candidate-card" style="--card-color: #e76f51">
+          <div class="card-header" style="background: #e76f51"><span>#01</span></div>
+          <div class="photo-wrap"><img src="imgcandidatos/1.María de los Ángeles Usuga-Líder Soyed.png"></div>
+          <div class="card-body">
+            <h3 class="candidate-name">María de los Ángeles Usuga</h3>
+          </div>
+        </div>
+        <div class="candidate-card" style="--card-color: #e76f51">
+          <div class="card-header" style="background: #e76f51"><span>#03</span></div>
+          <div class="photo-wrap"><img src="imgcandidatos/3.Javier David Bermúdez-Líder Soyed.png"></div>
+          <div class="card-body">
+            <h3 class="candidate-name">Javier David Bermúdez</h3>
+          </div>
+        </div>
+      </div>
+      <button class="carousel-btn next-btn" onclick="slide('lider_soyed', 1)">&#10095;</button>
+    </div>
+    <div class="carousel-dots" id="dots-lider_soyed"></div>
+  </section>
+
+  <div class="image-modal" id="imageModal">
+    <span class="close-modal">&times;</span>
+    <img class="modal-content" id="modalImg">
+  </div>
+
+  <script>
+    const state = {};
+
+    function initCarousel(id, count) {
+      state[id] = { current: 0, count };
+      const dotsContainer = document.getElementById('dots-' + id);
+      dotsContainer.innerHTML = '';
+      for (let i = 0; i < count; i++) {
+        const dot = document.createElement('span');
+        dot.className = 'dot';
+        dot.onclick = () => goTo(id, i);
+        dotsContainer.appendChild(dot);
+      }
+      updateDots(id);
+    }
+
+    function slide(id, dir) {
+      const s = state[id];
+      s.current = (s.current + dir + s.count) % s.count;
+      applySlide(id);
+    }
+
+    function goTo(id, i) {
+      state[id].current = i;
+      applySlide(id);
+    }
+
+    function applySlide(id) {
+      const track = document.getElementById('track-' + id);
+      track.style.transform = `translateX(${-state[id].current * 100}%)`;
+      updateDots(id);
+    }
+
+    function updateDots(id) {
+      const dots = document.querySelectorAll('#dots-' + id + ' .dot');
+      dots.forEach((d, i) => d.classList.toggle('active', i === state[id].current));
+    }
+
+    // Init
+    initCarousel('personeria', 5);
+    initCarousel('contraloria', 6);
+    initCarousel('lider_soyed', 2);
+
+    // Swipe support
+    document.querySelectorAll('.carousel-container').forEach(container => {
+      let startX = 0;
+      const id = container.querySelector('.carousel-track').id.replace('track-', '');
+      container.addEventListener('touchstart', e => startX = e.touches[0].clientX);
+      container.addEventListener('touchend', e => {
+        const diff = startX - e.changedTouches[0].clientX;
+        if (Math.abs(diff) > 50) slide(id, diff > 0 ? 1 : -1);
+      });
+    });
+
+    // Image Zoom Logic
+    const modal = document.getElementById('imageModal');
+    const modalImg = document.getElementById('modalImg');
+    const closeBtn = document.querySelector('.close-modal');
+
+    document.querySelectorAll('.photo-wrap img').forEach(img => {
+      img.addEventListener('click', () => {
+        modal.classList.add('active');
+        modalImg.src = img.src;
+        document.body.style.overflow = 'hidden'; // Prevent scroll
+      });
+    });
+
+    function closeModal() {
+      modal.classList.remove('active');
+      document.body.style.overflow = ''; // Restore scroll
+    }
+
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+
+    // Escape key to close
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
+    });
+  </script>
+</body>
+
+</html>
